@@ -13,6 +13,8 @@ const Header = ({ className }: HeaderProps) => {
         className={cx(
           css`
             position: fixed;
+            top: 0;
+            height: 0;
             width: 100%;
             height: 76px;
             margin: auto auto;
