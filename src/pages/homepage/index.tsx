@@ -47,20 +47,8 @@ const Page = () => {
   );
 };
 
-const HomePage = () => {
-  const client = new ApolloClient({
-    uri: "https://graphql.anilist.co",
-    cache: new InMemoryCache(),
-  });
-  return (
-    <ApolloProvider client={client}>
-      <Page />
-    </ApolloProvider>
-  );
-};
+export default Page;
 
-export default HomePage;
-
-HomePage.getLayout = function getLayout(page: React.ReactNode) {
+Page.getLayout = function getLayout(page: React.ReactNode) {
   return <Layout>{page}</Layout>;
 };
