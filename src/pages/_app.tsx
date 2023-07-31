@@ -4,6 +4,7 @@ import { NextComponentType, NextPageContext } from "next";
 import { Open_Sans } from "next/font/google";
 import "../styles/base.css";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { CollectionsProvider } from '@libs/contexts/collection';
 const OpenSans = Open_Sans({
   subsets: ["latin"],
   display: "swap",
@@ -35,7 +36,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         }
       `}</style>
       <ApolloProvider client={client}>
+        <CollectionsProvider>
         {getLayout(<Component {...pageProps} />)}
+        </CollectionsProvider>
       </ApolloProvider>
     </>
   );

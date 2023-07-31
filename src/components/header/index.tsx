@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { Box } from "@components";
 import { css } from "@emotion/css";
+import Link from "next/link";
 
 interface HeaderProps {
   className?: string;
@@ -25,7 +26,7 @@ const Header = ({ className }: HeaderProps) => {
           className
         )}
       >
-        <Box className="header__wrapper"></Box>
+        <Box className="header__wrapper"><Link href="/collections">collections</Link></Box>
       </Box>
     </>
   );

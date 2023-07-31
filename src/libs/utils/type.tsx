@@ -1,4 +1,5 @@
 export type Anime = {
+  id: number;
   description: string;
   title: {
     romaji: string;
@@ -9,5 +10,6 @@ export type Anime = {
   };
   coverImage: {
     large: string;
+    extraLarge: string;
   };
 };
