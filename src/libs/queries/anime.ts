@@ -15,6 +15,7 @@ export const AnimeList = gql`
         bannerImage
         coverImage {
           large
+          extraLarge
         }
         title {
           romaji
@@ -25,6 +26,27 @@ export const AnimeList = gql`
         }
         averageScore
       }
+    }
+  }
+`;
+
+export const SingleAnime = gql`
+  query ($id: Int) {
+    Media(id: $id, type: ANIME) {
+      id
+      bannerImage
+      coverImage {
+        large
+        extraLarge
+      }
+      title {
+        romaji
+      }
+      description
+      startDate {
+        year
+      }
+      averageScore
     }
   }
 `;
