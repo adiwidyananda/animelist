@@ -1,10 +1,11 @@
 import React, { ForwardRefRenderFunction, SelectHTMLAttributes } from "react";
+import { css } from "@emotion/css";
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   name?: string;
   label?: string;
   ref?: string;
-  options?:any
+  options?: any;
 }
 
 const Select: ForwardRefRenderFunction<HTMLSelectElement, SelectProps> = (
@@ -14,12 +15,20 @@ const Select: ForwardRefRenderFunction<HTMLSelectElement, SelectProps> = (
   return (
     <label>
       {label}
-      <select {...otherProps} name={name} ref={ref} >
-      {options.map((item:any, index:number ) => (
-        <option key={index} value={item?.id} >
-          {item?.name}
-        </option>
-      ))}
+      <select
+        {...otherProps}
+        className={css`
+          width: 100%;
+          padding: 8px;
+        `}
+        name={name}
+        ref={ref}
+      >
+        {options.map((item: any, index: number) => (
+          <option key={index} value={item?.id}>
+            {item?.name}
+          </option>
+        ))}
       </select>
     </label>
   );

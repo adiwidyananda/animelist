@@ -9,6 +9,7 @@ interface IButtonProps {
   loading?: Boolean;
   submit?: boolean;
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 type TBoxProps = IButtonProps & React.HTMLAttributes<HTMLButtonElement>;
@@ -20,6 +21,7 @@ const Button = React.forwardRef<HTMLButtonElement, TBoxProps>(
     loading,
     submit = false,
     fullWidth = false,
+    disabled = false,
     ...rest
   }) => (
     <button
@@ -51,6 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, TBoxProps>(
         className
       )}
       type={submit ? "submit" : "button"}
+      disabled={disabled}
       {...rest}
     >
       <span>{children}</span>

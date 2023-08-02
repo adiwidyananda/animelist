@@ -1,5 +1,5 @@
 export type Anime = {
-  id: number;
+  id: number | string;
   description: string;
   title: {
     romaji: string;
