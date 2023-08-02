@@ -1,4 +1,12 @@
-import { Box, Container, Layout, Button, Select } from "@components";
+import {
+  Box,
+  Container,
+  Layout,
+  Button,
+  Select,
+  Info,
+  Modal,
+} from "@components";
 import { css } from "@emotion/css";
 import cx from "classnames";
 import Image from "next/image";
@@ -16,6 +24,7 @@ interface CardProps {
 
 const Page = ({ data }: CardProps) => {
   const { collections, setCollections } = useCollections();
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const { addAnime } = useCollection();
   const {
     register,
@@ -29,9 +38,9 @@ const Page = ({ data }: CardProps) => {
   const onSubmit = async (values: any) => {
     addAnime({
       collectionID: values?.collection,
-      anime: data
-    })
-  }
+      anime: data,
+    });
+  };
   return (
     <Container>
       <Box
@@ -57,19 +66,75 @@ const Page = ({ data }: CardProps) => {
         <Box
           className={cx(css`
             grid-column: span 6 / span 6;
+            padding: 12px;
+            display: flex;
+            align-items: center;
           `)}
         >
-          <Box>{data?.title?.romaji}</Box>
-          <form onSubmit={handleSubmit(onSubmit)}>
-          {value}
-          <Select
-          options={collections}
-          {...register("collection")}
-      />
-      <Button submit={true}>Add To Collection</Button>
-      </form>
+          <Box>
+            <Box
+              className={cx(css`
+                font-size: 36px;
+                color: white;
+              `)}
+            >
+              {data?.title?.romaji}
+            </Box>
+            <div
+              className={cx(css`
+                font-size: 14px;
+                margin-top: 40px;
+                color: rgb(103, 102, 110);
+              `)}
+              dangerouslySetInnerHTML={{ __html: data?.description }}
+            ></div>
+          </Box>
         </Box>
       </Box>
+      <Box
+        className={cx(css`
+          color: rgb(103, 102, 110);
+          margin-top: 24px;
+        `)}
+      >
+        <Box
+          className={cx(css`
+            color: white;
+            font-size: 24px;
+          `)}
+        >
+          Anime Info
+        </Box>
+        <Info label="Release" description={data?.startDate?.year} />
+        <Info label="Score" description={data?.averageScore / 10} />
+        <Info label="Episodes" description={data?.episodes} />
+        <Info label="Genres" description={data?.genres?.join(", ")} />
+      </Box>
+      <Box
+        className={css`
+          margin-top: 24px;
+        `}
+      >
+        <Button fullWidth onClick={() => setOpenModal(true)}>
+          Add To Collection
+        </Button>
+      </Box>
+      <Modal isOpen={openModal} setIsOpen={setOpenModal}>
+        <Box
+          className={css`
+            width: 100vw;
+            max-width: 600px;
+            height: fit-content;
+            background: #fcfcfc;
+          `}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {value}
+            <Select options={collections} {...register("collection")} />
+            <Button submit={true}>Add To Collection</Button>
+          </form>
+        </Box>
+      </Modal>
     </Container>
   );
 };

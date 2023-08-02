@@ -3,7 +3,7 @@ import { css } from "@emotion/css";
 import cx from "classnames";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useCollections } from "@libs/contexts/collection"
+import { useCollections } from "@libs/contexts/collection";
 import { useCollection } from "@libs/hooks/collections";
 
 const Page = () => {
@@ -18,39 +18,12 @@ const Page = () => {
   } = useForm({
     mode: "onBlur",
   });
-  // useEffect(() => {
-  //   const collection = {
-  //     id: "111",
-  //     title: "haahha",
-  //     anime: {
-  //       id: 1,
-  //       title: "hahahah"
-  //     }
-  //   }
-  //   setCollections(collection);
-  // }, [])
-  // const onSubmit = (
-  //   async (values) => {
-  //     const payload = {
-  //       post: data?.id,
-  //       parent: selectedComment?.id,
-  //       author_name: values?.name,
-  //       author_email: values?.email,
-  //       content: values.comment,
-  //       syp_rating: rating.toString(),
-  //     };
-  //     await sendComment({ payload });
-  //     await getData();
-  //     reset();
-  //     onOpenComment();
-  //   },
-  // );
   const onSubmit = async (values: any) => {
     createCollection(values.name);
-  }
-  const onDeleteCollection = (id:string) => {
+  };
+  const onDeleteCollection = (id: string) => {
     deleteCollection(id);
-  }
+  };
   const [isOpenCollectionModal, setIsOpenCollectionModal] =
     useState<boolean>(false);
   return (
@@ -72,8 +45,7 @@ const Page = () => {
               object-fit: fill;
             }
           `)}
-        >
-        </Box>
+        ></Box>
         <Box
           className={cx(css`
             grid-column: span 6 / span 6;
@@ -84,9 +56,11 @@ const Page = () => {
           </Button>
           {collections?.length > 0 && (
             <>
-            {collections?.map((x:any, index:number) => (
-            <Box onClick={() => onDeleteCollection(x.id)} key={index}>{x?.name}</Box>
-          ))}
+              {collections?.map((x: any, index: number) => (
+                <Box onClick={() => onDeleteCollection(x.id)} key={index}>
+                  {x?.name}
+                </Box>
+              ))}
             </>
           )}
           <Modal
@@ -103,8 +77,8 @@ const Page = () => {
               <Box>
                 <Box>testts tetstst</Box>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                <Input {...register("name")}/>
-                <Button submit={true}>create</Button>
+                  <Input {...register("name")} />
+                  <Button submit={true}>create</Button>
                 </form>
               </Box>
             </Box>

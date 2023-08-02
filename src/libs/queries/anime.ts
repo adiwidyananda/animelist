@@ -46,7 +46,9 @@ export const SingleAnime = gql`
       startDate {
         year
       }
+      genres
       averageScore
+      episodes
     }
   }
 `;

@@ -3,6 +3,7 @@ export { default as Button } from "./button";
 export { default as Card } from "./card";
 export { default as Container } from "./container";
 export { default as Header } from "./header";
+export { default as Info } from "./info";
 export { default as Input } from "./form/input";
 export { default as Select } from "./form/select";
 export { default as Layout } from "./layout";

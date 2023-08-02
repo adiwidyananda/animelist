@@ -12,4 +12,11 @@ export type Anime = {
     large: string;
     extraLarge: string;
   };
+  genres: [string];
+  episodes: number;
+};
+
+export type InfoType = {
+  label: string;
+  description: string | number;
 };

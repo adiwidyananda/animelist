@@ -8,12 +8,20 @@ interface IButtonProps {
   className?: string;
   loading?: Boolean;
   submit?: boolean;
+  fullWidth?: boolean;
 }
 
 type TBoxProps = IButtonProps & React.HTMLAttributes<HTMLButtonElement>;
 
 const Button = React.forwardRef<HTMLButtonElement, TBoxProps>(
-  ({ children, className, loading, submit = false, ...rest }) => (
+  ({
+    children,
+    className,
+    loading,
+    submit = false,
+    fullWidth = false,
+    ...rest
+  }) => (
     <button
       className={cx(
         css`
@@ -36,9 +44,13 @@ const Button = React.forwardRef<HTMLButtonElement, TBoxProps>(
             transition-duration: 300ms;
           }
         `,
-        className,
+        fullWidth &&
+          css`
+            width: 100%;
+          `,
+        className
       )}
-      type={submit ? 'submit' : 'button'}
+      type={submit ? "submit" : "button"}
       {...rest}
     >
       <span>{children}</span>
