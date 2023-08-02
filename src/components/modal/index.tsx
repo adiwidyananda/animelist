@@ -2,7 +2,13 @@ import { Box } from "@components";
 import { css } from "@emotion/css";
 import cx from "classnames";
 
-const Modal = ({ children, isOpen, setIsOpen }: any) => {
+interface ModalProps {
+  setIsOpen: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+  children: React.ReactNode;
+  isOpen: boolean;
+}
+
+const Modal = ({ children, isOpen, setIsOpen }: ModalProps) => {
   return (
     <>
       {isOpen && (
