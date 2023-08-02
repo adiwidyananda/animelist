@@ -7,19 +7,13 @@ import { Anime } from "@libs/utils/type";
 
 interface CardProps {
   data: Anime;
+  redirect?: boolean;
 }
 
-const Card = ({ data }: CardProps) => {
-  return (
-    <>
-      <Link
-        href={`/anime/${data?.id}`}
-        className={cx(
-          css`
-            text-decoration: none;
-          `
-        )}
-      >
+const Card = ({ data, redirect = true }: CardProps) => {
+  const CardWrapper = () => {
+    return (
+      <>
         <Box
           className={cx(
             "card",
@@ -187,7 +181,25 @@ const Card = ({ data }: CardProps) => {
             </Box>
           </Box>
         </Box>
-      </Link>
+      </>
+    );
+  };
+  return (
+    <>
+      {redirect ? (
+        <Link
+          href={`/anime/${data?.id}`}
+          className={cx(
+            css`
+              text-decoration: none;
+            `
+          )}
+        >
+          <CardWrapper />
+        </Link>
+      ) : (
+        <CardWrapper />
+      )}
     </>
   );
 };
