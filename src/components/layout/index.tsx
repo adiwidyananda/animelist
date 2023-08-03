@@ -24,7 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ className, children }) => {
       </Box>
       <Box
         className={css`
-          height: 200px;
+          height: 100px;
         `}
       ></Box>
     </>

@@ -1,17 +1,30 @@
-import { Box } from "@components";
+import { Box, Button, Modal } from "@components";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { css } from "@emotion/css";
 import cx from "classnames";
 import { Anime } from "@libs/utils/type";
 import { defaultImage } from "@/libs/utils/default-image";
+import { useCollection } from "@libs/hooks/collections";
+import { useCollections } from "@libs/contexts/collection";
 
 interface CardProps {
   data: Anime;
   redirect?: boolean;
+  showRemove?: boolean;
+  collectionID?: string;
 }
 
-const Card = ({ data, redirect = true }: CardProps) => {
+const Card = ({
+  data,
+  redirect = true,
+  showRemove,
+  collectionID,
+}: CardProps) => {
+  const { collections } = useCollections();
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
+  const { removeAnime } = useCollection();
   const CardWrapper = () => {
     return (
       <>
@@ -83,8 +96,8 @@ const Card = ({ data, redirect = true }: CardProps) => {
                 css`
                   padding: 30px;
                   padding-bottom: 0px;
-                  height: 180px;
                   width: 100%;
+                  height: ${showRemove ? "240px" : "180px"};
                   transition-property: all;
                   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
                   transition-duration: 300ms;
@@ -181,6 +194,22 @@ const Card = ({ data, redirect = true }: CardProps) => {
                 )}
                 dangerouslySetInnerHTML={{ __html: data?.description }}
               ></div>
+              {showRemove && (
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsOpenDeleteModal(true);
+                  }}
+                  className={css`
+                    margin-top: 20px;
+                  `}
+                  type="danger"
+                  fullWidth
+                >
+                  Remove
+                </Button>
+              )}
             </Box>
           </Box>
         </Box>
@@ -203,6 +232,74 @@ const Card = ({ data, redirect = true }: CardProps) => {
       ) : (
         <CardWrapper />
       )}
+      <Modal isOpen={isOpenDeleteModal} setIsOpen={setIsOpenDeleteModal}>
+        <Box
+          className={css`
+            width: 90vw;
+            max-width: 600px;
+            height: fit-content;
+            background: #fcfcfc;
+            color: black;
+            padding: 24px;
+            overflow: auto;
+            border-radius: 8px;
+          `}
+        >
+          <Box
+            onClick={() => setIsOpenDeleteModal(false)}
+            className={css`
+              text-align: right;
+              margin-bottom: 10px;
+              cursor: pointer;
+            `}
+          >
+            X
+          </Box>
+          <Box
+            className={css`
+              text-align: center;
+              font-size: 20px;
+            `}
+          >
+            Are you sure to remove{" "}
+            <span
+              className={css`
+                font-weight: bold;
+              `}
+            >
+              {data?.title?.romaji}
+            </span>{" "}
+            from{" "}
+            <span
+              className={css`
+                font-weight: bold;
+              `}
+            >
+              {collections?.find((x: any) => x?.id === collectionID)?.name}
+            </span>{" "}
+            collection ?
+          </Box>
+          <Box
+            className={css`
+              display: flex;
+              justify-content: center;
+              gap: 12px;
+              margin-top: 20px;
+            `}
+          >
+            <Button onClick={() => setIsOpenDeleteModal(false)}>Cancel</Button>
+            <Button
+              onClick={() => {
+                removeAnime({ collectionID, animeID: data?.id });
+                setIsOpenDeleteModal(false);
+              }}
+              type="danger"
+            >
+              Remove
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 };

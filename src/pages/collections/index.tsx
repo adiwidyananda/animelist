@@ -9,41 +9,72 @@ import {
 } from "@components";
 import { css } from "@emotion/css";
 import cx from "classnames";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCallback, useState } from "react";
 import { useCollections } from "@libs/contexts/collection";
 import { useCollection } from "@libs/hooks/collections";
 
 const Page = () => {
-  const { collections, setCollections } = useCollections();
-  const { createCollection, deleteCollection } = useCollection();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    mode: "onBlur",
-  });
-  const onSubmit = async (values: any) => {
-    createCollection(values.name);
-  };
-  const onDeleteCollection = (id: string) => {
-    deleteCollection(id);
-  };
+  const { collections } = useCollections();
+  const { createCollection } = useCollection();
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const [newCollection, setNewCollection] = useState<string>();
   const [isOpenCollectionModal, setIsOpenCollectionModal] =
     useState<boolean>(false);
+  const onSubmit = useCallback(async () => {
+    if (newCollection) {
+      createCollection(newCollection);
+      setIsOpenCollectionModal(false);
+    }
+  }, [newCollection]);
+  const handleNameChange = (value: string) => {
+    if (!value) {
+      setErrorMessage(`Please insert name of collection`);
+      return;
+    }
+    if (/[^a-zA-Z\d\s:]/.test(value)) {
+      setErrorMessage(
+        `Please don't use special characters in the collection name`
+      );
+      return;
+    }
+    if (collections?.some((x: any) => x.name === value)) {
+      setErrorMessage(`Name has been used`);
+      return;
+    }
+    setNewCollection(value);
+    setErrorMessage("");
+  };
   return (
     <Container>
       <Box
         className={css`
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           margin-top: 22px;
-          font-size: 24px;
-          border-radius: 4px;
-          color: white;
+          margin-bottom: 24px;
+          @media only screen and (max-width: 600px) {
+            display: block;
+          }
         `}
       >
-        <h1>Collections</h1>
+        <Box
+          className={css`
+            font-size: 36px;
+            border-radius: 4px;
+            color: white;
+            margin-bottom: 0px;
+            font-weight: 700;
+            @media only screen and (max-width: 600px) {
+              margin-bottom: 20px;
+            }
+          `}
+        >
+          Collections
+        </Box>
+        <Button onClick={() => setIsOpenCollectionModal(true)}>
+          Create Collection
+        </Button>
       </Box>
       <Box
         className={cx(css`
@@ -66,63 +97,51 @@ const Page = () => {
           </Box>
         ))}
       </Box>
-      <Box
-        className={cx(css`
-          display: grid;
-          grid-template-columns: repeat(12, minmax(0, 1fr));
-          margin-top: 40px;
-          background: rgba(255, 255, 255, 0.1);
-        `)}
+      <Modal
+        isOpen={isOpenCollectionModal}
+        setIsOpen={setIsOpenCollectionModal}
       >
         <Box
           className={cx(css`
-            grid-column: span 6 / span 6;
-            position: relative;
-            aspect-ratio: 16/14;
-            img {
-              object-fit: fill;
-            }
-          `)}
-        ></Box>
-        <Box
-          className={cx(css`
-            grid-column: span 6 / span 6;
+            width: 90vw;
+            max-width: 600px;
+            height: fit-content;
+            background: #fcfcfc;
+            color: black;
+            padding: 24px;
+            overflow: auto;
+            border-radius: 8px;
           `)}
         >
-          <Button onClick={() => setIsOpenCollectionModal(true)}>
-            Add To Collection
-          </Button>
-          {collections?.length > 0 && (
-            <>
-              {collections?.map((x: any, index: number) => (
-                <Box onClick={() => onDeleteCollection(x.id)} key={index}>
-                  {x?.name}
-                </Box>
-              ))}
-            </>
-          )}
-          <Modal
-            isOpen={isOpenCollectionModal}
-            setIsOpen={setIsOpenCollectionModal}
+          <Box
+            onClick={() => setIsOpenCollectionModal(false)}
+            className={css`
+              text-align: right;
+              margin-bottom: 10px;
+              cursor: pointer;
+            `}
           >
-            <Box
-              className={cx(css`
-                background: rgba(255, 255, 255, 0.1);
-                color: white;
-                width: 600px;
-              `)}
-            >
-              <Box>
-                <Box>testts tetstst</Box>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <Input {...register("name")} />
-                  <Button submit={true}>create</Button>
-                </form>
-              </Box>
+            X
+          </Box>
+          <Box>
+            <Box>
+              <Input
+                label="Name"
+                onChange={(e) => handleNameChange(e.target.value)}
+                errorMessage={errorMessage}
+              />
             </Box>
-          </Modal>
+            <Button
+              className={css`
+                margin-top: 10px;
+              `}
+              onClick={() => !errorMessage && onSubmit()}
+            >
+              create
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      </Modal>
     </Container>
   );
 };

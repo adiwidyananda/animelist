@@ -19,12 +19,14 @@ const Page = () => {
       <Box
         className={css`
           margin-top: 22px;
-          font-size: 24px;
+          font-size: 36px;
           border-radius: 4px;
           color: white;
+          font-weight: 700;
+          margin-bottom: 24px;
         `}
       >
-        <h1>Anime List</h1>
+        Anime List
       </Box>
       <Box
         className={cx(css`
