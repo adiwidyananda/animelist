@@ -18,17 +18,13 @@ const Page = () => {
     <Container>
       <Box
         className={css`
-          padding: 32px;
           margin-top: 22px;
-          background-color: brown;
           font-size: 24px;
           border-radius: 4px;
-          &:hover {
-            color: red;
-          }
+          color: white;
         `}
       >
-        <h1>Hello, anime app!</h1>
+        <h1>Anime List</h1>
       </Box>
       <Box
         className={cx(css`

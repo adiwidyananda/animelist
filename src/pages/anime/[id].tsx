@@ -75,20 +75,31 @@ const Page = ({ data }: CardProps) => {
         `)}
       >
         <Box
-          className={cx(css`
+          className={css`
+            display: flex;
+            align-items: center;
+            padding: 12px;
             grid-column: span 6 / span 6;
             position: relative;
-            aspect-ratio: 16/14;
-            img {
-              object-fit: fill;
-            }
             @media only screen and (max-width: 820px) {
               grid-column: span 12 / span 12;
             }
-          `)}
+          `}
         >
-          <Image src={data?.coverImage?.extraLarge} alt="1" layout="fill" />
+          <Box
+            className={cx(css`
+              width: 100%;
+              position: relative;
+              aspect-ratio: 16/14;
+              img {
+                object-fit: fill;
+              }
+            `)}
+          >
+            <Image src={data?.coverImage?.extraLarge} alt="1" layout="fill" />
+          </Box>
         </Box>
+
         <Box
           className={cx(css`
             grid-column: span 6 / span 6;

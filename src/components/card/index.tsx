@@ -4,6 +4,7 @@ import Link from "next/link";
 import { css } from "@emotion/css";
 import cx from "classnames";
 import { Anime } from "@libs/utils/type";
+import { defaultImage } from "@/libs/utils/default-image";
 
 interface CardProps {
   data: Anime;
@@ -61,8 +62,10 @@ const Card = ({ data, redirect = true }: CardProps) => {
               `
             )}
           >
-            {data?.coverImage?.large && (
+            {data?.coverImage?.large ? (
               <Image src={data?.coverImage?.large} alt="1" layout="fill" />
+            ) : (
+              <Image src={defaultImage?.card} alt="1" layout="fill" />
             )}
           </div>
           <Box
