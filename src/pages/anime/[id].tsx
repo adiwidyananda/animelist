@@ -12,12 +12,13 @@ import {
 import { css } from "@emotion/css";
 import cx from "classnames";
 import Image from "next/image";
-import { Anime } from "@libs/utils/type";
+import { Anime, CollectionType } from "@libs/utils/type";
 import client from "@libs/utils/appolo-client";
 import { SingleAnime } from "@libs/queries/anime";
 import { useState, useCallback, useEffect } from "react";
 import { useCollections } from "@libs/contexts/collection";
 import { useCollection } from "@libs/hooks/collections";
+import { GetServerSideProps } from "next";
 
 interface CardProps {
   data: Anime;
@@ -26,7 +27,7 @@ interface CardProps {
 const Page = ({ data }: CardProps) => {
   const { collections } = useCollections();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [listCollections, setListCollection] = useState<any>();
+  const [listCollections, setListCollection] = useState<CollectionType[]>();
   const { addAnime, addLoading, createCollectionWithAnime } = useCollection();
   const [isInCollection, setIsInCollection] = useState<boolean>(false);
   const [collectionID, setCollectionID] = useState<string>(
@@ -34,17 +35,17 @@ const Page = ({ data }: CardProps) => {
   );
 
   useEffect(() => {
-    const animeCollection = collections?.filter((x: any) =>
-      x?.listAnime?.some((x: any) => x?.id === data?.id)
+    const animeCollection = collections?.filter((x: CollectionType) =>
+      x?.listAnime?.some((x: Anime) => x?.id === data?.id)
     );
     setListCollection(animeCollection);
   }, [collections]);
   useEffect(() => {
     const selectedCollection = collections?.find(
-      (x: any) => x?.id === collectionID
+      (x: CollectionType) => x?.id === collectionID
     );
     setIsInCollection(
-      selectedCollection?.listAnime?.some((x: any) => x?.id === data?.id)
+      selectedCollection?.listAnime?.some((x: Anime) => x?.id === data?.id)
     );
   }, [collectionID]);
   const onSubmit = useCallback(async () => {
@@ -128,7 +129,7 @@ const Page = ({ data }: CardProps) => {
               `)}
               dangerouslySetInnerHTML={{ __html: data?.description }}
             ></div>
-            {listCollections?.length > 0 && (
+            {listCollections && listCollections?.length > 0 && (
               <>
                 <Box
                   className={css`
@@ -149,7 +150,7 @@ const Page = ({ data }: CardProps) => {
                     gap: 4px;
                   `}
                 >
-                  {listCollections?.map((x: any, index: number) => (
+                  {listCollections?.map((x: CollectionType, index: number) => (
                     <CollectionTag
                       key={index}
                       linkUrl={`/collections/${x?.slug}`}
@@ -249,12 +250,12 @@ const Page = ({ data }: CardProps) => {
 
 export default Page;
 
-export async function getServerSideProps(ctx: any) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { data: res } = await client.query({
       query: SingleAnime,
       variables: {
-        id: ctx?.query?.id,
+        id: context?.query?.id,
       },
     });
     return { props: { data: res?.Media } };
@@ -262,7 +263,7 @@ export async function getServerSideProps(ctx: any) {
     console.error(error);
     return { props: {} };
   }
-}
+};
 
 Page.getLayout = function getLayout(page: React.ReactNode) {
   return <Layout>{page}</Layout>;

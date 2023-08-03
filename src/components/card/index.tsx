@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { css } from "@emotion/css";
 import cx from "classnames";
-import { Anime } from "@libs/utils/type";
+import { Anime, CollectionType } from "@libs/utils/type";
 import { defaultImage } from "@/libs/utils/default-image";
 import { useCollection } from "@libs/hooks/collections";
 import { useCollections } from "@libs/contexts/collection";
@@ -275,7 +275,10 @@ const Card = ({
                 font-weight: bold;
               `}
             >
-              {collections?.find((x: any) => x?.id === collectionID)?.name}
+              {
+                collections?.find((x: CollectionType) => x?.id === collectionID)
+                  ?.name
+              }
             </span>{" "}
             collection ?
           </Box>
