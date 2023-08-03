@@ -10,6 +10,7 @@ interface IButtonProps {
   submit?: boolean;
   fullWidth?: boolean;
   disabled?: boolean;
+  type?: string;
 }
 
 type TBoxProps = IButtonProps & React.HTMLAttributes<HTMLButtonElement>;
@@ -22,12 +23,12 @@ const Button = React.forwardRef<HTMLButtonElement, TBoxProps>(
     submit = false,
     fullWidth = false,
     disabled = false,
+    type,
     ...rest
   }) => (
     <button
       className={cx(
         css`
-          background: rgb(26, 39, 82);
           border: none;
           padding: 18px 32px;
           color: white;
@@ -46,6 +47,13 @@ const Button = React.forwardRef<HTMLButtonElement, TBoxProps>(
             transition-duration: 300ms;
           }
         `,
+        type === "danger"
+          ? css`
+              background: #7d0322;
+            `
+          : css`
+              background: rgb(26, 39, 82);
+            `,
         fullWidth &&
           css`
             width: 100%;

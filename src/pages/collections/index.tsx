@@ -1,4 +1,12 @@
-import { Box, Container, Layout, Button, Modal, Input } from "@components";
+import {
+  Box,
+  Container,
+  Layout,
+  Button,
+  Modal,
+  Input,
+  CollectionCard,
+} from "@components";
 import { css } from "@emotion/css";
 import cx from "classnames";
 import { useEffect, useState } from "react";
@@ -9,7 +17,6 @@ import { useCollection } from "@libs/hooks/collections";
 const Page = () => {
   const { collections, setCollections } = useCollections();
   const { createCollection, deleteCollection } = useCollection();
-  console.log(collections);
   const {
     register,
     handleSubmit,
@@ -28,6 +35,37 @@ const Page = () => {
     useState<boolean>(false);
   return (
     <Container>
+      <Box
+        className={css`
+          margin-top: 22px;
+          font-size: 24px;
+          border-radius: 4px;
+          color: white;
+        `}
+      >
+        <h1>Collections</h1>
+      </Box>
+      <Box
+        className={cx(css`
+          display: grid;
+          grid-template-columns: repeat(12, minmax(0, 1fr));
+          gap: 1rem;
+        `)}
+      >
+        {collections?.map((x: any, index: number) => (
+          <Box
+            key={index}
+            className={cx(css`
+              grid-column: span 6 / span 6;
+              @media only screen and (max-width: 600px) {
+                grid-column: span 12 / span 12;
+              }
+            `)}
+          >
+            <CollectionCard data={x} />
+          </Box>
+        ))}
+      </Box>
       <Box
         className={cx(css`
           display: grid;
