@@ -84,19 +84,40 @@ const Page = () => {
           gap: 1rem;
         `)}
       >
-        {collections?.map((x: CollectionType, index: number) => (
+        {collections?.length > 0 ? (
+          <>
+            {" "}
+            {collections?.map((x: CollectionType, index: number) => (
+              <Box
+                key={index}
+                className={cx(css`
+                  grid-column: span 6 / span 6;
+                  @media only screen and (max-width: 600px) {
+                    grid-column: span 12 / span 12;
+                  }
+                `)}
+              >
+                <CollectionCard data={x} />
+              </Box>
+            ))}
+          </>
+        ) : (
           <Box
-            key={index}
             className={cx(css`
-              grid-column: span 6 / span 6;
-              @media only screen and (max-width: 600px) {
-                grid-column: span 12 / span 12;
-              }
+              grid-column: span 12 / span 12;
+              background: #161716;
+              text-align: center;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-size: 24px;
+              height: 100px;
             `)}
           >
-            <CollectionCard data={x} />
+            No collections have been created yet
           </Box>
-        ))}
+        )}
       </Box>
       <Modal
         isOpen={isOpenCollectionModal}

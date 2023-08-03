@@ -43,3 +43,8 @@ export type SelectOptionsProps = {
   id: string;
   name: string;
 };
+
+export type EditCollectionProps = {
+  collectionID: string;
+  name: string;
+};

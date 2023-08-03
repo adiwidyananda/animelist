@@ -4,6 +4,7 @@ import {
   CollectionType,
   AddAnimeProps,
   RemoveAnimeProps,
+  EditCollectionProps,
 } from "@libs/utils/type";
 import { v4 } from "uuid";
 import { useState } from "react";
@@ -13,17 +14,34 @@ export const useCollection = () => {
   const { collections, setCollections } = useCollections();
   const [addLoading, setAddLoading] = useState<boolean>(false);
 
-  const createCollection = (title: string) => {
+  const createCollection = (name: string) => {
     const newCollection = {
       id: v4(),
-      name: title,
-      slug: slugify(title, {
+      name: name,
+      slug: slugify(name, {
         lower: true,
         remove: /[*+~%<>/;.(){}?,'"!:@#^|]/g,
       }),
       listAnime: [],
     };
     setCollections(collections?.concat(newCollection));
+  };
+  const updateCollection = ({ collectionID, name }: EditCollectionProps) => {
+    const newCollection = collections?.map((x: CollectionType) => {
+      if (x?.id === collectionID) {
+        return {
+          ...x,
+          name: name,
+          slug: slugify(name, {
+            lower: true,
+            remove: /[*+~%<>/;.(){}?,'"!:@#^|]/g,
+          }),
+        };
+      } else {
+        return x;
+      }
+    });
+    setCollections(newCollection);
   };
   const createCollectionWithAnime = (anime: Anime) => {
     const newCollection = {
@@ -80,5 +98,6 @@ export const useCollection = () => {
     createCollectionWithAnime,
     addLoading,
     removeAnime,
+    updateCollection,
   };
 };
