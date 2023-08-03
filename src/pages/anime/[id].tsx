@@ -152,7 +152,7 @@ const Page = ({ data }: CardProps) => {
                   {listCollections?.map((x: any, index: number) => (
                     <CollectionTag
                       key={index}
-                      linkUrl={`/collection/${x?.slug}`}
+                      linkUrl={`/collections/${x?.slug}`}
                       name={x?.name}
                     />
                   ))}

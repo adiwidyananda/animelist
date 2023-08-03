@@ -53,11 +53,27 @@ export const useCollection = () => {
     setCollections(newCollection);
     setAddLoading(false);
   };
+  const removeAnime = ({ collectionID, animeID }: any) => {
+    setAddLoading(true);
+    const newCollection = collections?.map((x: any) => {
+      if (x?.id === collectionID) {
+        return {
+          ...x,
+          listAnime: x?.listAnime?.filter((x: Anime) => x?.id !== animeID),
+        };
+      } else {
+        return x;
+      }
+    });
+    setCollections(newCollection);
+    setAddLoading(false);
+  };
   return {
     createCollection,
     deleteCollection,
     addAnime,
     createCollectionWithAnime,
     addLoading,
+    removeAnime,
   };
 };
