@@ -12,6 +12,7 @@ import cx from "classnames";
 import { useCallback, useState } from "react";
 import { useCollections } from "@libs/contexts/collection";
 import { useCollection } from "@libs/hooks/collections";
+import { CollectionType } from "@/libs/utils/type";
 
 const Page = () => {
   const { collections } = useCollections();
@@ -37,7 +38,7 @@ const Page = () => {
       );
       return;
     }
-    if (collections?.some((x: any) => x.name === value)) {
+    if (collections?.some((x: CollectionType) => x.name === value)) {
       setErrorMessage(`Name has been used`);
       return;
     }
@@ -83,7 +84,7 @@ const Page = () => {
           gap: 1rem;
         `)}
       >
-        {collections?.map((x: any, index: number) => (
+        {collections?.map((x: CollectionType, index: number) => (
           <Box
             key={index}
             className={cx(css`

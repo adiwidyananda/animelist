@@ -6,8 +6,13 @@ import Image from "next/image";
 import { defaultImage } from "@/libs/utils/default-image";
 import { useCollection } from "@libs/hooks/collections";
 import Link from "next/link";
+import { CollectionType } from "@libs/utils/type";
 
-const CollectionCard = ({ data }: any) => {
+interface CollectionCardProps {
+  data: CollectionType;
+}
+
+const CollectionCard = ({ data }: CollectionCardProps) => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const { deleteCollection } = useCollection();
   return (

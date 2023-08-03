@@ -2,7 +2,7 @@ import { Box, Container, Layout, Card } from "@components";
 import { css } from "@emotion/css";
 import cx from "classnames";
 import { useCollections } from "@libs/contexts/collection";
-import { Anime } from "@libs/utils/type";
+import { Anime, CollectionType } from "@libs/utils/type";
 import { useRouter } from "next/router";
 
 const CollectionDetail = () => {
@@ -20,7 +20,11 @@ const CollectionDetail = () => {
           margin-bottom: 24px;
         `}
       >
-        {collections?.find((x: any) => x.slug === router?.query?.slug)?.name}{" "}
+        {
+          collections?.find(
+            (x: CollectionType) => x.slug === router?.query?.slug
+          )?.name
+        }{" "}
         Collection
       </Box>
       <Box
@@ -31,7 +35,7 @@ const CollectionDetail = () => {
         `)}
       >
         {collections
-          ?.find((x: any) => x.slug === router?.query?.slug)
+          ?.find((x: CollectionType) => x.slug === router?.query?.slug)
           ?.listAnime?.map((anime: Anime, index: number) => (
             <Box
               key={index}
@@ -48,8 +52,9 @@ const CollectionDetail = () => {
               <Card
                 showRemove
                 collectionID={
-                  collections?.find((x: any) => x.slug === router?.query?.slug)
-                    .id
+                  collections?.find(
+                    (x: CollectionType) => x.slug === router?.query?.slug
+                  ).id
                 }
                 data={anime}
               />
