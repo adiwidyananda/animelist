@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Box, Button, Modal } from "@components";
+import { useState, useCallback } from "react";
+import { Box, Button, Modal, Input } from "@components";
 import cx from "classnames";
 import { css } from "@emotion/css";
 import Image from "next/image";
 import { defaultImage } from "@/libs/utils/default-image";
 import { useCollection } from "@libs/hooks/collections";
+import { useCollections } from "@libs/contexts/collection";
 import Link from "next/link";
 import { CollectionType } from "@libs/utils/type";
 
@@ -14,7 +15,42 @@ interface CollectionCardProps {
 
 const CollectionCard = ({ data }: CollectionCardProps) => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
-  const { deleteCollection } = useCollection();
+  const { collections } = useCollections();
+  const { deleteCollection, updateCollection } = useCollection();
+  const [isOpenCollectionModal, setIsOpenCollectionModal] =
+    useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const [editCollection, setEditCollection] = useState<string>();
+  const handleNameChange = (value: string) => {
+    if (!value) {
+      setErrorMessage(`Please insert name of collection`);
+      return;
+    }
+    if (/[^a-zA-Z\d\s:]/.test(value)) {
+      setErrorMessage(
+        `Please don't use special characters in the collection name`
+      );
+      return;
+    }
+    if (
+      collections?.some((x: CollectionType) => x.name === value) &&
+      value !== data?.name
+    ) {
+      setErrorMessage(`Name has been used`);
+      return;
+    }
+    setEditCollection(value);
+    setErrorMessage("");
+  };
+  const onSubmit = useCallback(async () => {
+    if (editCollection) {
+      updateCollection({
+        collectionID: data?.id,
+        name: editCollection,
+      });
+      setIsOpenCollectionModal(false);
+    }
+  }, [editCollection]);
   return (
     <>
       <Link
@@ -127,10 +163,20 @@ const CollectionCard = ({ data }: CollectionCardProps) => {
                 }}
                 className={css`
                   margin-top: 20px;
+                  margin-right: 10px;
                 `}
                 type="danger"
               >
                 Remove
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsOpenCollectionModal(true);
+                }}
+              >
+                Edit Collection
               </Button>
             </Box>
           </Box>
@@ -192,6 +238,52 @@ const CollectionCard = ({ data }: CollectionCardProps) => {
               type="danger"
             >
               Remove
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+      <Modal
+        isOpen={isOpenCollectionModal}
+        setIsOpen={setIsOpenCollectionModal}
+      >
+        <Box
+          className={cx(css`
+            width: 90vw;
+            max-width: 600px;
+            height: fit-content;
+            background: #fcfcfc;
+            color: black;
+            padding: 24px;
+            overflow: auto;
+            border-radius: 8px;
+          `)}
+        >
+          <Box
+            onClick={() => setIsOpenCollectionModal(false)}
+            className={css`
+              text-align: right;
+              margin-bottom: 10px;
+              cursor: pointer;
+            `}
+          >
+            X
+          </Box>
+          <Box>
+            <Box>
+              <Input
+                label="Name"
+                defaultValue={data?.name}
+                onChange={(e) => handleNameChange(e.target.value)}
+                errorMessage={errorMessage}
+              />
+            </Box>
+            <Button
+              className={css`
+                margin-top: 10px;
+              `}
+              onClick={() => !errorMessage && onSubmit()}
+            >
+              Update
             </Button>
           </Box>
         </Box>

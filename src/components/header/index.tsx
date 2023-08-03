@@ -31,6 +31,9 @@ const Header = ({ className }: HeaderProps) => {
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 99;
             background-color: #101213;
+            @media only screen and (max-width: 1200px) {
+              padding-left: 12px;
+            }
           `,
           className
         )}
