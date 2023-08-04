@@ -126,6 +126,7 @@ const Page = () => {
     });
     setOpenAddAnimeModal(false);
     setShowCheckbox(false);
+    setCheckedAnime([]);
   }, [collectionID, addedAnime]);
   //Add Anime function
   return (
