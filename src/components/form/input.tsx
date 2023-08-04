@@ -4,7 +4,6 @@ import { css } from "@emotion/css";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   label?: string;
-  ref?: string;
   errorMessage?: string;
 }
 

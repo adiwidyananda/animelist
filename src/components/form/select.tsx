@@ -5,7 +5,6 @@ import { SelectOptionsProps } from "@libs/utils/type";
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   name?: string;
   label?: string;
-  ref?: string;
   options?: [SelectOptionsProps];
 }
 

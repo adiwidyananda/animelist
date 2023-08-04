@@ -8,6 +8,7 @@ import {
   Modal,
   Card,
   CollectionTag,
+  Head,
 } from "@components";
 import { css } from "@emotion/css";
 import cx from "classnames";
@@ -227,7 +228,6 @@ const Page = ({ data }: CardProps) => {
             `}
           >
             <Box>
-              {isInCollection}
               <Card data={data} redirect={false} />
             </Box>
             <Button
@@ -244,6 +244,11 @@ const Page = ({ data }: CardProps) => {
           </Box>
         </Box>
       </Modal>
+      <Head
+        title={data?.title?.romaji}
+        description={data?.description}
+        image={data?.coverImage?.extraLarge}
+      />
     </Container>
   );
 };
