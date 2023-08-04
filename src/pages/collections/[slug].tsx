@@ -6,6 +6,7 @@ import {
   Button,
   Input,
   Modal,
+  Head,
 } from "@components";
 import { css } from "@emotion/css";
 import cx from "classnames";
@@ -14,6 +15,7 @@ import { Anime, CollectionType } from "@libs/utils/type";
 import { useRouter } from "next/router";
 import { useState, useCallback } from "react";
 import { useCollection } from "@libs/hooks/collections";
+import { defaultImage } from "@/libs/utils/default-image";
 const slugify = require("slugify");
 
 const CollectionDetail = () => {
@@ -208,6 +210,19 @@ const CollectionDetail = () => {
           </Box>
         </Box>
       </Modal>
+      <Head
+        title={`${
+          collections?.find(
+            (x: CollectionType) => x.slug === router?.query?.slug
+          )?.name
+        } collections`}
+        description={`list anime of ${
+          collections?.find(
+            (x: CollectionType) => x.slug === router?.query?.slug
+          )?.name
+        } collection`}
+        image={defaultImage?.banner}
+      />
     </Container>
   );
 };

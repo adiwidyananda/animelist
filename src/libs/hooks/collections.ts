@@ -5,6 +5,7 @@ import {
   AddAnimeProps,
   RemoveAnimeProps,
   EditCollectionProps,
+  AddManyAnimeProps,
 } from "@libs/utils/type";
 import { v4 } from "uuid";
 import { useState } from "react";
@@ -76,6 +77,21 @@ export const useCollection = () => {
     setCollections(newCollection);
     setAddLoading(false);
   };
+  const addManyAnime = (data: AddManyAnimeProps) => {
+    setAddLoading(true);
+    const newCollection = collections?.map((x: CollectionType) => {
+      if (x?.id === data?.collectionID) {
+        return {
+          ...x,
+          listAnime: x.listAnime && x.listAnime.concat(data?.anime),
+        };
+      } else {
+        return x;
+      }
+    });
+    setCollections(newCollection);
+    setAddLoading(false);
+  };
   const removeAnime = ({ collectionID, animeID }: RemoveAnimeProps) => {
     setAddLoading(true);
     const newCollection = collections?.map((x: CollectionType) => {
@@ -95,6 +111,7 @@ export const useCollection = () => {
     createCollection,
     deleteCollection,
     addAnime,
+    addManyAnime,
     createCollectionWithAnime,
     addLoading,
     removeAnime,

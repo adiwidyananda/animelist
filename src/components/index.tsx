@@ -1,9 +1,11 @@
 export { default as Box } from "./box";
 export { default as Button } from "./button";
 export { default as Card } from "./card";
+export { default as Checkbox } from "./form/checkbox";
 export { default as CollectionCard } from "./collection-card";
 export { default as CollectionTag } from "./collection-tag";
 export { default as Container } from "./container";
+export { default as Head } from "./head";
 export { default as Header } from "./header";
 export { default as Info } from "./info";
 export { default as Input } from "./form/input";

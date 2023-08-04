@@ -34,6 +34,11 @@ export type AddAnimeProps = {
   anime: any;
 };
 
+export type AddManyAnimeProps = {
+  collectionID: string;
+  anime: any;
+};
+
 export type RemoveAnimeProps = {
   collectionID: string | undefined;
   animeID: string | number;

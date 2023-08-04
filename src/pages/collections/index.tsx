@@ -6,6 +6,7 @@ import {
   Modal,
   Input,
   CollectionCard,
+  Head,
 } from "@components";
 import { css } from "@emotion/css";
 import cx from "classnames";
@@ -13,6 +14,7 @@ import { useCallback, useState } from "react";
 import { useCollections } from "@libs/contexts/collection";
 import { useCollection } from "@libs/hooks/collections";
 import { CollectionType } from "@/libs/utils/type";
+import { defaultImage } from "@/libs/utils/default-image";
 
 const Page = () => {
   const { collections } = useCollections();
@@ -164,6 +166,11 @@ const Page = () => {
           </Box>
         </Box>
       </Modal>
+      <Head
+        title="Collections"
+        description="list of collections"
+        image={defaultImage?.banner}
+      />
     </Container>
   );
 };
